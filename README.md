@@ -8,6 +8,8 @@
 
 [View NPM package ](https://www.npmjs.com/package/findlogs)
 
+[View on Github ](https://github.com/duckRabbitPy/findlogs)
+
 </br>
 
 ## How to install:
@@ -36,8 +38,10 @@ npm link findlogs
 
 ### How to use:
 
+cd into the directory you wish to search. The search is recursive and will explore all sub-directories excluding node_modules.
+
 ```shell
-cd myRootFolder
+cd myFolder
 ```
 
 ```shell
