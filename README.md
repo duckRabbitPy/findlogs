@@ -1,8 +1,12 @@
-# Findlogs
+# Findlogs 🔎
 
 </br>
 
 ## A simple CLI tool for locating stray console.log statements
+
+</br>
+
+[View NPM package ](https://www.npmjs.com/package/findlogs)
 
 </br>
 
