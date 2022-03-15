@@ -22,18 +22,6 @@ First run:
 npm install findlogs
 ```
 
-Then run:
-
-```shell
-npm link
-```
-
-or
-
-```shell
-npm link findlogs
-```
-
 </br>
 
 ### How to use:
@@ -45,7 +33,7 @@ cd myFolder
 ```
 
 ```shell
-findlogs
+❯ npx findlogs
 ```
 
 </br>
@@ -53,6 +41,6 @@ findlogs
 #### Output:
 
 ```shell
-❯ findlogs
+❯ npx findlogs
 🔎 Found  3 console.logs in index.js
 ```
