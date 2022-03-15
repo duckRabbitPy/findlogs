@@ -41,7 +41,8 @@ async function logLogs(folder: string = "") {
   const dir = await fs.promises.opendir(`./${folder}`);
   for await (const dirent of dir) {
     const filepath = process.cwd() + `/${folder}/${dirent.name}`;
-    if (filepath.slice(-2) === "js" || filepath.slice(-2) === "ts") {
+
+    if (filepath.slice(-3) === ".js" || filepath.slice(-3) === ".ts") {
       fs.readFile(filepath, "utf8", (err: Error, data: string) => {
         if (err) {
           console.error(err);
@@ -54,8 +55,6 @@ async function logLogs(folder: string = "") {
             occurences,
             `console.logs in ${dirent.name}`
           );
-        } else {
-          console.log(`No logs found ✅`);
         }
       });
     }
