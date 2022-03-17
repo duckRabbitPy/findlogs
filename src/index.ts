@@ -1,62 +1,59 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
+import fs = require("fs");
+import { getDirRecursive, countOccurences } from "./helpers";
+import { stdin, stdout } from "process";
 
+//get all directory titles
+//loop through each directory and log if console.log() found
 (function findAndLog() {
-  const allDirs = getDirectoriesRecursive(".");
-
-  const authorDirs = allDirs.filter(
-    (folder) => !folder.includes("node_modules")
+  const allDirTitles = getDirRecursive(".").filter(
+    (dirTitle) => !dirTitle.includes("node_modules")
   );
 
-  authorDirs.forEach((folder: string) => {
-    logLogs(folder).catch(console.error);
+  allDirTitles.forEach((dirTitle: string) => {
+    searchDir(dirTitle).catch(console.error);
   });
 })();
 
-function getDirectories(srcpath: string) {
-  return fs
-    .readdirSync(srcpath)
-    .map((file: string) => path.join(srcpath, file))
-    .filter((path: string) => fs.statSync(path).isDirectory());
-}
-
-function flatten(lists: []) {
-  return lists.reduce((a, b) => a.concat(b), []);
-}
-
-function getDirectoriesRecursive(srcpath: string) {
-  return [
-    srcpath,
-    ...flatten(getDirectories(srcpath).map(getDirectoriesRecursive)),
-  ];
-}
-
-function countOccurences(filecontent: string, word: string) {
-  return filecontent.split(word).length - 1;
-}
-
-async function logLogs(folder: string = "") {
-  const dir = await fs.promises.opendir(`./${folder}`);
+//open directory and loop through directory entries
+// pass current directory entry as argument to countAndDisplay()
+async function searchDir(dirTitle: string = "") {
+  let clean = true;
+  const dir = await fs.promises.opendir(`./${dirTitle}`);
   for await (const dirent of dir) {
-    const filepath = process.cwd() + `/${folder}/${dirent.name}`;
+    const filepath = process.cwd() + `/${dirTitle}/${dirent.name}`;
 
     if (filepath.slice(-3) === ".js" || filepath.slice(-3) === ".ts") {
-      fs.readFile(filepath, "utf8", (err: Error, data: string) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        let occurences = countOccurences(data, "console.log");
-        if (occurences > 0) {
-          console.log(
-            `🔎 Found `,
-            occurences,
-            `console.logs in ${dirent.name}`
-          );
+      countAndDisplay(filepath, dirent, (result: boolean) => {
+        if (result === false) {
+          clean = false;
         }
       });
     }
+    console.log(clean);
   }
+}
+
+//read directory entry contents and count occurrences of console.log()
+//log output
+async function countAndDisplay(
+  filepath: string,
+  dirent: fs.Dirent,
+  callback: any
+) {
+  let count = 0;
+  fs.readFile(filepath, "utf8", (err, data: string) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    let occurences = countOccurences(data, "console.log");
+    if (occurences > 0) {
+      console.log(`🔎 Found `, occurences, `console.logs in ${dirent.name}`);
+      callback();
+    } else {
+      callback();
+    }
+  });
 }
