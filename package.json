@@ -4,10 +4,10 @@
   "description": "Quality assurance helper script",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -w --outDir lib",
-    "test": "node ./lib/index.js"
+    "build": "tsc -w --outDir dist",
+    "test": "node ./dist/index.js"
   },
-  "bin": "./lib/index.js",
+  "bin": "./dist/index.js",
   "author": "Oli Jones",
   "license": "ISC",
   "dependencies": {
@@ -15,5 +15,8 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.21"
-  }
+  },
+  "files": [
+    "/dist"
+  ]
 }
