@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -w --outDir lib",
-    "loglog": "node index.js"
+    "test": "node ./lib/index.js"
   },
   "bin": "./lib/index.js",
   "author": "Oli Jones",
