@@ -1,6 +1,6 @@
 {
   "name": "findlogs",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Quality assurance helper script",
   "main": "index.js",
   "scripts": {
