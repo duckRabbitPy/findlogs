@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -w --outDir dist",
-    "test": "node ./dist/index.js"
+    "test": "node ./dist/test.js"
   },
   "bin": "./dist/index.js",
   "author": "Oli Jones",
