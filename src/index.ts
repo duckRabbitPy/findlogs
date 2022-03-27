@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import fs = require("fs");
-import { getDirRecursive, countOccurences } from "./helpers";
+import { getDirRecursive, countOccurences, logOrlogs } from "./helpers";
 const util = require("util");
 const readFile = util.promisify(fs.readFile);
 
@@ -54,7 +54,19 @@ async function countAndDisplay(filepath: string, dirent: fs.Dirent) {
     .then((data: string) => {
       let occurences = countOccurences(data, "console.log");
       if (occurences > 0) {
-        console.log(`🔎 Found `, occurences, `console.logs in ${dirent.name}`);
+        const lastIndex = filepath.lastIndexOf("/");
+        const secondLastIndex = filepath.lastIndexOf(
+          "/",
+          filepath.lastIndexOf("/") - 1
+        );
+
+        const enclosingDir = filepath.slice(secondLastIndex, lastIndex);
+
+        console.log(
+          `🔎 Found `,
+          occurences,
+          `console.${logOrlogs(occurences)} in ${enclosingDir}/${dirent.name}`
+        );
       }
       return occurences;
     })

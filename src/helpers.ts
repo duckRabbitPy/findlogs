@@ -19,3 +19,7 @@ export function getDirRecursive(srcpath: string): string[] {
 export function countOccurences(filecontent: string, word: string) {
   return filecontent.split(word).length - 1;
 }
+
+export function logOrlogs(occurences: number) {
+  return occurences === 1 ? "log" : "logs";
+}

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.countOccurences = exports.getDirRecursive = exports.flatten = exports.getDir = void 0;
+exports.logOrlogs = exports.countOccurences = exports.getDirRecursive = exports.flatten = exports.getDir = void 0;
 const fs = require("fs");
 const path = require("path");
 function getDir(srcpath) {
@@ -22,3 +22,7 @@ function countOccurences(filecontent, word) {
     return filecontent.split(word).length - 1;
 }
 exports.countOccurences = countOccurences;
+function logOrlogs(occurences) {
+    return occurences === 1 ? "log" : "logs";
+}
+exports.logOrlogs = logOrlogs;
