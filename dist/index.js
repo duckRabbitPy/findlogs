@@ -75,7 +75,10 @@ function countAndDisplay(filepath, dirent) {
             .then((data) => {
             let occurences = (0, helpers_1.countOccurences)(data, "console.log");
             if (occurences > 0) {
-                console.log(`🔎 Found `, occurences, `console.logs in ${dirent.name}`);
+                const lastIndex = filepath.lastIndexOf("/");
+                const secondLastIndex = filepath.lastIndexOf("/", filepath.lastIndexOf("/") - 1);
+                const enclosingDir = filepath.slice(secondLastIndex, lastIndex);
+                console.log(`🔎 Found `, occurences, `console.${(0, helpers_1.logOrlogs)(occurences)} in ${enclosingDir}/${dirent.name}`);
             }
             return occurences;
         })
