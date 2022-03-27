@@ -48,7 +48,8 @@ function searchDir(dirTitle = "") {
             for (var dir_1 = __asyncValues(dir), dir_1_1; dir_1_1 = yield dir_1.next(), !dir_1_1.done;) {
                 const dirent = dir_1_1.value;
                 const filepath = process.cwd() + `/${dirTitle}/${dirent.name}`;
-                if (filepath.slice(-3) === ".js" || filepath.slice(-3) === ".ts") {
+                if ([".js", ".ts"].includes(filepath.slice(-3)) ||
+                    [".jsx", ".tsx"].includes(filepath.slice(-4))) {
                     let occurrences = yield countAndDisplay(filepath, dirent);
                     if (occurrences > 0) {
                         return true;

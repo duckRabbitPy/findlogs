@@ -34,7 +34,10 @@ async function searchDir(dirTitle: string = "") {
   for await (const dirent of dir) {
     const filepath = process.cwd() + `/${dirTitle}/${dirent.name}`;
 
-    if (filepath.slice(-3) === ".js" || filepath.slice(-3) === ".ts") {
+    if (
+      [".js", ".ts"].includes(filepath.slice(-3)) ||
+      [".jsx", ".tsx"].includes(filepath.slice(-4))
+    ) {
       let occurrences = await countAndDisplay(filepath, dirent);
       if (occurrences > 0) {
         return true;
