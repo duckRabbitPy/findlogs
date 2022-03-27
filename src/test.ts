@@ -25,40 +25,59 @@ async function runShellCommand(cmd: string): Promise<string> {
 // spawn new shell and run command
 runShellCommand("node ./dist/index.js").then((result) => {
   // if stdout fails to return sucess message, output warning
-  const testResultsOnly = result
-    .replace("🔎 Found  3 console.logs in /dist/test.js", "")
-    .replace("🔎 Found  10 console.logs in /src/test.ts", "");
 
-  console.log(testResultsOnly);
+  console.log(result);
+  foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.js", 1);
+  foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.ts", 2);
   foundExpected(
-    testResultsOnly,
-    "Found  1 console.log in /testLvl1/file1.js",
-    1
-  );
-  foundExpected(
-    testResultsOnly,
-    "Found  2 console.logs in /testLvl1/file2.jsx",
-    2
-  );
-  foundExpected(
-    testResultsOnly,
-    "Found  1 console.log in /testLvl2/file3.js",
+    result,
+    "Found 2 console.logs in fixture/testLvl1/file2.jsx",
     3
   );
   foundExpected(
-    testResultsOnly,
-    "Found  2 console.logs in /testLvl2/file4.jsx",
+    result,
+    "Found 2 console.logs in fixture/testLvl1/file2.tsx",
     4
   );
   foundExpected(
-    testResultsOnly,
-    "Found  1 console.log in /testLvl3/file5.js",
+    result,
+    "Found 1 console.log in fixture/testLvl1/testLvl2/file3.js",
     5
   );
   foundExpected(
-    testResultsOnly,
-    "Found  2 console.logs in /testLvl3/file6.jsx",
+    result,
+    "Found 1 console.log in fixture/testLvl1/testLvl2/file3.ts",
     6
+  );
+  foundExpected(
+    result,
+    "Found 2 console.logs in fixture/testLvl1/testLvl2/file4.jsx",
+    7
+  );
+  foundExpected(
+    result,
+    "Found 2 console.logs in fixture/testLvl1/testLvl2/file4.tsx",
+    8
+  );
+  foundExpected(
+    result,
+    "Found 1 console.log in fixture/testLvl1/testLvl2/testLvl3/file5.js",
+    9
+  );
+  foundExpected(
+    result,
+    "Found 1 console.log in fixture/testLvl1/testLvl2/testLvl3/file5.ts",
+    10
+  );
+  foundExpected(
+    result,
+    "Found 2 console.logs in fixture/testLvl1/testLvl2/testLvl3/file6.jsx",
+    11
+  );
+  foundExpected(
+    result,
+    "Found 2 console.logs in fixture/testLvl1/testLvl2/testLvl3/file6.tsx",
+    12
   );
 });
 
