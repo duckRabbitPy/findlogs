@@ -10,30 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require("fs");
 const helpers_1 = require("./helpers");
-const util = require("util");
-const readFile = util.promisify(fs.readFile);
 const nodeDir = require("node-dir");
 //get all directory titles
 //loop through each directory and log if console.log() found
-//display no log found message if no logs found
 (function findAndLog() {
     return __awaiter(this, void 0, void 0, function* () {
         const allDirTitles = (0, helpers_1.getDirRecursive)(".").filter((dirTitle) => !dirTitle.includes("node_modules"));
-        const foundLogArr = Promise.all(allDirTitles.map((dirTitle) => {
-            return searchDir(dirTitle).catch(console.error);
-        }));
-        foundLogArr.then((arr) => {
-            if (arr.every((found) => found === false)) {
-                console.log("no logs found, directory is clean 🧼");
-            }
-        });
+        for (const dirTitle of allDirTitles) {
+            searchDir(dirTitle);
+        }
     });
 })();
 //open directory and loop through directory entries
-// pass current directory entry as argument to countAndDisplay()
-//return true if log found, false if no log found
+//count and log occurrences of console.logs found
 function searchDir(dirTitle = "") {
     return __awaiter(this, void 0, void 0, function* () {
         nodeDir.readFiles(`./${dirTitle}`, {
@@ -54,6 +44,5 @@ function searchDir(dirTitle = "") {
             if (err)
                 throw err;
         });
-        return false;
     });
 }
