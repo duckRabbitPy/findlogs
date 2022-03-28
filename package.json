@@ -1,16 +1,17 @@
 {
   "name": "findlogs",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "description": "Quality assurance helper script",
   "main": "index.js",
   "scripts": {
     "build": "tsc -w --outDir dist",
-    "test": "node ./dist/index.js"
+    "test": "node ./dist/test.js"
   },
   "bin": "./dist/index.js",
   "author": "Oli Jones",
   "license": "ISC",
   "dependencies": {
+    "node-dir": "^0.1.17",
     "typescript": "^4.6.2"
   },
   "devDependencies": {

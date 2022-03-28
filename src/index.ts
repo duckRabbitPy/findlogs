@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 import fs = require("fs");
+import { type } from "os";
 import { getDirRecursive, countOccurences, logOrlogs } from "./helpers";
 const util = require("util");
 const readFile = util.promisify(fs.readFile);
+const nodeDir = require("node-dir");
 
 //get all directory titles
 //loop through each directory and log if console.log() found
@@ -30,47 +32,34 @@ const readFile = util.promisify(fs.readFile);
 // pass current directory entry as argument to countAndDisplay()
 //return true if log found, false if no log found
 async function searchDir(dirTitle: string = "") {
-  const dir = await fs.promises.opendir(`./${dirTitle}`);
-  for await (const dirent of dir) {
-    const filepath = process.cwd() + `/${dirTitle}/${dirent.name}`;
+  nodeDir.readFiles(
+    `./${dirTitle}`,
+    {
+      match: /.js|.jsx|.ts|.tsx$/,
+      exclude: ["node_modules"],
+    },
+    function (err: Error, content: string, filename: string, next: any) {
+      if (err) throw err;
 
-    if (
-      [".js", ".ts"].includes(filepath.slice(-3)) ||
-      [".jsx", ".tsx"].includes(filepath.slice(-4))
-    ) {
-      let occurrences = await countAndDisplay(filepath, dirent);
-      if (occurrences > 0) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
+      const occurrences = countOccurences(content, "console.log");
+      const commentedNum = countOccurences(content, "//console.log");
+      const commentedNumV2 = countOccurences(content, "// console.log");
 
-//read directory entry contents and count occurrences of console.log()
-//log output
-async function countAndDisplay(filepath: string, dirent: fs.Dirent) {
-  return readFile(filepath, "utf8")
-    .then((data: string) => {
-      let occurences = countOccurences(data, "console.log");
-      if (occurences > 0) {
-        const lastIndex = filepath.lastIndexOf("/");
-        const secondLastIndex = filepath.lastIndexOf(
-          "/",
-          filepath.lastIndexOf("/") - 1
-        );
+      const trueOccurrences = occurrences - (commentedNum + commentedNumV2);
 
-        const enclosingDir = filepath.slice(secondLastIndex, lastIndex);
-
+      if (trueOccurrences > 0 && !filename.includes("node_modules")) {
         console.log(
-          `🔎 Found `,
-          occurences,
-          `console.${logOrlogs(occurences)} in ${enclosingDir}/${dirent.name}`
+          `🔍 Found ${trueOccurrences} console.${logOrlogs(
+            trueOccurrences
+          )} in ${filename}`
         );
       }
-      return occurences;
-    })
-    .catch((err: string) => {
-      console.log("Error", err);
-    });
+      next();
+    },
+    function (err: Error) {
+      if (err) throw err;
+    }
+  );
+
+  return false;
 }
