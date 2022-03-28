@@ -43,11 +43,14 @@ function searchDir(dirTitle = "") {
             if (err)
                 throw err;
             const occurrences = (0, helpers_1.countOccurences)(content, "console.log");
-            if (occurrences > 0 && !filename.includes("node_modules")) {
-                console.log(`🔍 Found ${occurrences} console.${(0, helpers_1.logOrlogs)(occurrences)} in ${filename}`);
+            const commentedNum = (0, helpers_1.countOccurences)(content, "//console.log");
+            const commentedNumV2 = (0, helpers_1.countOccurences)(content, "// console.log");
+            const trueOccurrences = occurrences - (commentedNum + commentedNumV2);
+            if (trueOccurrences > 0 && !filename.includes("node_modules")) {
+                console.log(`🔍 Found ${trueOccurrences} console.${(0, helpers_1.logOrlogs)(trueOccurrences)} in ${filename}`);
             }
             next();
-        }, function (err, files) {
+        }, function (err) {
             if (err)
                 throw err;
         });

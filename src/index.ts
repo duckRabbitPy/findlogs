@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs = require("fs");
+import { type } from "os";
 import { getDirRecursive, countOccurences, logOrlogs } from "./helpers";
 const util = require("util");
 const readFile = util.promisify(fs.readFile);
@@ -37,20 +38,25 @@ async function searchDir(dirTitle: string = "") {
       match: /.js|.jsx|.ts|.tsx$/,
       exclude: ["node_modules"],
     },
-    function (err: any, content: string, filename: string, next: any) {
+    function (err: Error, content: string, filename: string, next: any) {
       if (err) throw err;
 
       const occurrences = countOccurences(content, "console.log");
-      if (occurrences > 0 && !filename.includes("node_modules")) {
+      const commentedNum = countOccurences(content, "//console.log");
+      const commentedNumV2 = countOccurences(content, "// console.log");
+
+      const trueOccurrences = occurrences - (commentedNum + commentedNumV2);
+
+      if (trueOccurrences > 0 && !filename.includes("node_modules")) {
         console.log(
-          `🔍 Found ${occurrences} console.${logOrlogs(
-            occurrences
+          `🔍 Found ${trueOccurrences} console.${logOrlogs(
+            trueOccurrences
           )} in ${filename}`
         );
       }
       next();
     },
-    function (err: any, files: any) {
+    function (err: Error) {
       if (err) throw err;
     }
   );

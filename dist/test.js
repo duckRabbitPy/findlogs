@@ -34,7 +34,6 @@ function runShellCommand(cmd) {
 // spawn new shell and run command
 runShellCommand("node ./dist/index.js").then((result) => {
     // if stdout fails to return sucess message, output warning
-    console.log(result);
     foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.js", 1);
     foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.ts", 2);
     foundExpected(result, "Found 2 console.logs in fixture/testLvl1/file2.jsx", 3);
@@ -47,6 +46,7 @@ runShellCommand("node ./dist/index.js").then((result) => {
     foundExpected(result, "Found 1 console.log in fixture/testLvl1/testLvl2/testLvl3/file5.ts", 10);
     foundExpected(result, "Found 2 console.logs in fixture/testLvl1/testLvl2/testLvl3/file6.jsx", 11);
     foundExpected(result, "Found 2 console.logs in fixture/testLvl1/testLvl2/testLvl3/file6.tsx", 12);
+    fileExtensionLimit(result, "Found 1 console.log in fixture/testLvl1/index.html", 13);
 });
 function foundExpected(testResults, expected, testnum) {
     if (testResults.includes(expected)) {
@@ -54,5 +54,13 @@ function foundExpected(testResults, expected, testnum) {
     }
     else {
         console.log(`T${testnum} "${expected}" is missing from output = fail ❌`);
+    }
+}
+function fileExtensionLimit(testResults, falsePositive, testnum) {
+    if (testResults.includes(falsePositive)) {
+        console.log(`T${testnum} "${falsePositive}" was logged when it ought not to have been = fail ❌`);
+    }
+    else {
+        console.log(`T${testnum} no false positive in HTML = pass ✅`);
     }
 }
