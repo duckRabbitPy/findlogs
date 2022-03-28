@@ -33,7 +33,6 @@ function runShellCommand(cmd) {
 }
 // spawn new shell and run command
 runShellCommand("node ./dist/index.js").then((result) => {
-    // if stdout fails to return sucess message, output warning
     foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.js", 1);
     foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.ts", 2);
     foundExpected(result, "Found 2 console.logs in fixture/testLvl1/file2.jsx", 3);
