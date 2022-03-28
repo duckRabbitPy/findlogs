@@ -11,7 +11,6 @@
   "author": "Oli Jones",
   "license": "ISC",
   "dependencies": {
-    "findlogs": "^1.0.11",
     "node-dir": "^0.1.17",
     "typescript": "^4.6.2"
   },
