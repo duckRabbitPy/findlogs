@@ -38,7 +38,7 @@ async function searchDir(dirTitle: string = "") {
         !filename.includes("node_modules") &&
         !filename.includes(".json")
       ) {
-        console.log("\x1b[2m", `${filename} clean`, "\x1b[0m", "🧼");
+        console.log("\x1b[2m", `${filename} clean`, "\x1b[0m");
       } else if (
         trueOccurrences > 0 &&
         !filename.includes("node_modules") &&
