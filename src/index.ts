@@ -7,11 +7,14 @@ const nodeDir = require("node-dir");
 //loop through each directory and log if console.log() found
 (async function findAndLog() {
   const allDirTitles = getDirRecursive(".").filter(
-    (dirTitle) => !dirTitle.includes("node_modules")
+    (dirTitle) =>
+      !dirTitle.includes("node_modules") && !dirTitle.includes(".git")
   );
 
+  console.log(`\nSearching: \n${allDirTitles.join("\r\n")} \n`);
+
   for (const dirTitle of allDirTitles) {
-    searchDir(dirTitle);
+    await searchDir(dirTitle);
   }
 })();
 
@@ -34,12 +37,6 @@ async function searchDir(dirTitle: string = "") {
       const trueOccurrences = occurrences - (commentedNum + commentedNumV2);
 
       if (
-        trueOccurrences === 0 &&
-        !filename.includes("node_modules") &&
-        !filename.includes(".json")
-      ) {
-        console.log("\x1b[2m", `${filename} clean`, "\x1b[0m", "🧼");
-      } else if (
         trueOccurrences > 0 &&
         !filename.includes("node_modules") &&
         !filename.includes(".json")
@@ -53,9 +50,6 @@ async function searchDir(dirTitle: string = "") {
         );
       }
       next();
-    },
-    function (err: Error) {
-      if (err) throw err;
     }
   );
 }

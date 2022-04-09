@@ -46,9 +46,8 @@ runShellCommand("node ./dist/index.js").then((result) => {
     foundExpected(result, "Found 1 console.log in fixture/testLvl1/testLvl2/testLvl3/file5.ts", 10);
     foundExpected(result, "Found 2 console.logs in fixture/testLvl1/testLvl2/testLvl3/file6.jsx", 11);
     foundExpected(result, "Found 2 console.logs in fixture/testLvl1/testLvl2/testLvl3/file6.tsx", 12);
-    foundExpected(result, "fixture/testLvl1/clean.js clean", 13);
-    fileExtensionLimit(result, "Found 1 console.log in fixture/testLvl1/index.html", 14);
-    fileExtensionLimit(result, "nodemodule", 15);
+    fileExtensionLimit(result, "Found 1 console.log in fixture/testLvl1/index.html", 13);
+    fileExtensionLimit(result, "nodemodule", 14);
 });
 function foundExpected(testResults, expected, testnum) {
     if (testResults.includes(expected)) {
