@@ -24,7 +24,6 @@ async function runShellCommand(cmd: string): Promise<string> {
 
 // spawn new shell and run command
 runShellCommand("node ./dist/index.js").then((result) => {
-  console.log(result);
   foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.js", 1);
   foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.ts", 2);
   foundExpected(
