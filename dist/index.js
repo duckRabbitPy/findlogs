@@ -27,8 +27,8 @@ const nodeDir = require("node-dir");
 function searchDir(dirTitle = "") {
     return __awaiter(this, void 0, void 0, function* () {
         nodeDir.readFiles(`./${dirTitle}`, {
-            match: /.js|.jsx|.ts|.tsx$/,
-            exclude: ["node_modules"],
+            match: /.js$|.jsx$|.ts$|.tsx$/,
+            exclude: ["/node_modules"],
         }, function (err, content, filename, next) {
             if (err)
                 throw err;
@@ -36,8 +36,15 @@ function searchDir(dirTitle = "") {
             const commentedNum = (0, helpers_1.countOccurences)(content, "//console.log");
             const commentedNumV2 = (0, helpers_1.countOccurences)(content, "// console.log");
             const trueOccurrences = occurrences - (commentedNum + commentedNumV2);
-            if (trueOccurrences > 0 && !filename.includes("node_modules")) {
-                console.log(`🔍 Found ${trueOccurrences} console.${(0, helpers_1.logOrlogs)(trueOccurrences)} in ${filename}`);
+            if (trueOccurrences === 0 &&
+                !filename.includes("node_modules") &&
+                !filename.includes(".json")) {
+                console.log("\x1b[2m", `${filename} clean`, "\x1b[0m", "🧼");
+            }
+            else if (trueOccurrences > 0 &&
+                !filename.includes("node_modules") &&
+                !filename.includes(".json")) {
+                console.log("\x1b[36m", `🔍 Found ${trueOccurrences} console.${(0, helpers_1.logOrlogs)(trueOccurrences)} in ${filename}`, "\x1b[0m");
             }
             next();
         }, function (err) {
