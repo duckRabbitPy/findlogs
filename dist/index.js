@@ -16,9 +16,10 @@ const nodeDir = require("node-dir");
 //loop through each directory and log if console.log() found
 (function findAndLog() {
     return __awaiter(this, void 0, void 0, function* () {
-        const allDirTitles = (0, helpers_1.getDirRecursive)(".").filter((dirTitle) => !dirTitle.includes("node_modules"));
+        const allDirTitles = (0, helpers_1.getDirRecursive)(".").filter((dirTitle) => !dirTitle.includes("node_modules") && !dirTitle.includes(".git"));
+        console.log(`\nSearching: \n${allDirTitles.join("\r\n")} \n`);
         for (const dirTitle of allDirTitles) {
-            searchDir(dirTitle);
+            yield searchDir(dirTitle);
         }
     });
 })();
@@ -36,20 +37,12 @@ function searchDir(dirTitle = "") {
             const commentedNum = (0, helpers_1.countOccurences)(content, "//console.log");
             const commentedNumV2 = (0, helpers_1.countOccurences)(content, "// console.log");
             const trueOccurrences = occurrences - (commentedNum + commentedNumV2);
-            if (trueOccurrences === 0 &&
-                !filename.includes("node_modules") &&
-                !filename.includes(".json")) {
-                console.log("\x1b[2m", `${filename} clean`, "\x1b[0m", "🧼");
-            }
-            else if (trueOccurrences > 0 &&
+            if (trueOccurrences > 0 &&
                 !filename.includes("node_modules") &&
                 !filename.includes(".json")) {
                 console.log("\x1b[36m", `🔍 Found ${trueOccurrences} console.${(0, helpers_1.logOrlogs)(trueOccurrences)} in ${filename}`, "\x1b[0m");
             }
             next();
-        }, function (err) {
-            if (err)
-                throw err;
         });
     });
 }
