@@ -21,8 +21,8 @@ async function searchDir(dirTitle: string = "") {
   nodeDir.readFiles(
     `./${dirTitle}`,
     {
-      match: /.js|.jsx|.ts|.tsx$/,
-      exclude: ["node_modules"],
+      match: /.js$|.jsx$|.ts$|.tsx$/,
+      exclude: ["/node_modules"],
     },
     function (err: Error, content: string, filename: string, next: any) {
       if (err) throw err;
@@ -33,11 +33,23 @@ async function searchDir(dirTitle: string = "") {
 
       const trueOccurrences = occurrences - (commentedNum + commentedNumV2);
 
-      if (trueOccurrences > 0 && !filename.includes("node_modules")) {
+      if (
+        trueOccurrences === 0 &&
+        !filename.includes("node_modules") &&
+        !filename.includes(".json")
+      ) {
+        console.log("\x1b[2m", `${filename} clean`, "\x1b[0m", "🧼");
+      } else if (
+        trueOccurrences > 0 &&
+        !filename.includes("node_modules") &&
+        !filename.includes(".json")
+      ) {
         console.log(
+          "\x1b[36m",
           `🔍 Found ${trueOccurrences} console.${logOrlogs(
             trueOccurrences
-          )} in ${filename}`
+          )} in ${filename}`,
+          "\x1b[0m"
         );
       }
       next();

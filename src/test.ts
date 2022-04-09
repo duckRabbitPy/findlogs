@@ -24,6 +24,7 @@ async function runShellCommand(cmd: string): Promise<string> {
 
 // spawn new shell and run command
 runShellCommand("node ./dist/index.js").then((result) => {
+  console.log(result);
   foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.js", 1);
   foundExpected(result, "Found 1 console.log in fixture/testLvl1/file1.ts", 2);
   foundExpected(
@@ -78,11 +79,15 @@ runShellCommand("node ./dist/index.js").then((result) => {
     12
   );
 
+  foundExpected(result, "fixture/testLvl1/clean.js clean", 13);
+
   fileExtensionLimit(
     result,
     "Found 1 console.log in fixture/testLvl1/index.html",
-    13
+    14
   );
+
+  fileExtensionLimit(result, "nodemodule", 15);
 });
 
 function foundExpected(testResults: string, expected: string, testnum: number) {
@@ -103,6 +108,6 @@ function fileExtensionLimit(
       `T${testnum} "${falsePositive}" was logged when it ought not to have been = fail ❌`
     );
   } else {
-    console.log(`T${testnum} no false positive in HTML = pass ✅`);
+    console.log(`T${testnum} no false positive = pass ✅`);
   }
 }
